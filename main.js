@@ -17,7 +17,7 @@ class UndoArray {
   }
 
   redo() { 
-    if(redoArray.length >= 1) { //undo lần nào thì không redo được
+    if(redoArray.length >= 1) { //chưa undo lần nào thì không redo được
       this.items.push(this.lastItem)
       redoArray.pop()
       this.lastItem = redoArray[redoArray.length - 1];
