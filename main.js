@@ -7,12 +7,11 @@ class UndoStack {
 
   getContents() {
     let content = [];
-    let i = 0;
-    for( i = 0; i < undoStack.items.length; i++) {
+    for(let i in undoStack.items) {
       content.push(undoStack.items[i])
     }
 
-    console.log(content)
+    return content;
   }
 
   push(value) {
@@ -23,7 +22,7 @@ class UndoStack {
     if(this.items.length === 0) {
       console.log('This is empty')
     } else {
-      this.items.pop();
+      return this.items.pop();
     }
   } 
 
@@ -50,7 +49,11 @@ class RedoStack {
   }
 
   pop() {
-    this.items.pop();
+    if(this.items.length === 0) {
+      console.log('This is empty')
+    } else {
+      return this.items.pop();
+    }
   } 
 
   peek() {
@@ -67,16 +70,14 @@ class RedoStack {
 };
 
 function undo() { //UNDO FUNCTION
-  undoItem = undoStack.items[undoStack.items.length - 1]
+  undoItem = undoStack.pop()
   redoStack.push(undoItem)
-  undoStack.pop()
 }
 
 function redo() { //REDO FUNCTION
   if(redoStack.items.length >= 1) { //chưa undo thì k thể redo
-    redoItem = redoStack.items[redoStack.items.length - 1]
+    redoItem = redoStack.pop()
     undoStack.push(redoItem)
-    redoStack.pop()
   } else {
     console.log('Cannot redo')
   }
@@ -96,12 +97,13 @@ undoStack.push('case 6')
 //UNDO 
 undo()
 undo()
-undo()
-
+// undo()
+// undo()
 
 //REDO
-redo()
-redo()
+// redo()
+// redo()
 // redo()
 
-undoStack.getContents()
+console.log(undoStack.getContents())
+
