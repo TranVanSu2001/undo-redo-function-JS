@@ -1,59 +1,107 @@
 // undo, redo Functions
 
-class UndoArray {
+class UndoStack {
   constructor() {
     this.items = [];
-    this.lastItem = 0;
+  }
+
+  getContents() {
+    let content = [];
+    let i = 0;
+    for( i = 0; i < undoStack.items.length; i++) {
+      content.push(undoStack.items[i])
+    }
+
+    console.log(content)
   }
 
   push(value) {
     this.items.push(value);
   }
 
-  undo() {
-    this.lastItem = this.items[this.items.length - 1]
-    redoArray.push(this.lastItem)
-    this.items.pop()
+  pop() {
+    if(this.items.length === 0) {
+      console.log('This is empty')
+    } else {
+      this.items.pop();
+    }
+  } 
+
+  peek() {
+    return this.items[this.items.length - 1]
   }
 
-  redo() { 
-    if(redoArray.length >= 1) { //chưa undo lần nào thì không redo được
-      this.items.push(this.lastItem)
-      redoArray.pop()
-      this.lastItem = redoArray[redoArray.length - 1];
-    }  else {
-      console.log('Cannot redo this array')
-    }
+  isEmpty() {
+    return this.items.length === 0;
+  }
+
+  length() {
+    return this.items.length;
   }
 };
 
-function  undo() {
-  this.lastItem = this.items[this.items.length - 1]
-  redoArray.push(this.lastItem)
-  this.items.pop()
+class RedoStack {
+  constructor() {
+    this.items = [];
+  }
+
+  push(value) {
+    this.items.push(value);
+  }
+
+  pop() {
+    this.items.pop();
+  } 
+
+  peek() {
+    return this.items[this.items.length - 1]
+  }
+
+  isEmpty() {
+    return this.items.length === 0;
+  }
+
+  length() {
+    return this.items.length;
+  }
+};
+
+function undo() { //UNDO FUNCTION
+  undoItem = undoStack.items[undoStack.items.length - 1]
+  redoStack.push(undoItem)
+  undoStack.pop()
 }
 
-var redoArray = [];
-let undoArray = new UndoArray();
+function redo() { //REDO FUNCTION
+  if(redoStack.items.length >= 1) { //chưa undo thì k thể redo
+    redoItem = redoStack.items[redoStack.items.length - 1]
+    undoStack.push(redoItem)
+    redoStack.pop()
+  } else {
+    console.log('Cannot redo')
+  }
+}
+
+let undoStack = new UndoStack();
+let redoStack = new RedoStack();
 
 //add item
-undoArray.push('case 1')
-undoArray.push('case 2')
-undoArray.push('case 3')
-undoArray.push('case 4')
-undoArray.push('case 5')
-undoArray.push('case 6')
+undoStack.push('case 1')
+undoStack.push('case 2')
+undoStack.push('case 3')
+undoStack.push('case 4')
+undoStack.push('case 5')
+undoStack.push('case 6')
 
-// undo array
-undoArray.undo();
-undoArray.undo();
-undoArray.undo();
+//UNDO 
+undo()
+undo()
+undo()
 
-// redo array
-undoArray.redo();
-undoArray.redo();
 
-console.log( 'redoArray:',redoArray);
+//REDO
+redo()
+redo()
+// redo()
 
-// console.log(redoStack)
-console.log(undoArray);
+undoStack.getContents()
