@@ -70,16 +70,20 @@ class RedoStack {
 };
 
 function undo() { //UNDO FUNCTION
-  undoItem = undoStack.pop()
-  redoStack.push(undoItem)
+  if(undoStack.length() >= 1) {
+    undoItem = undoStack.pop()
+    redoStack.push(undoItem)
+  } else {
+    alert('Cannot undo')
+  }
 }
 
 function redo() { //REDO FUNCTION
-  if(redoStack.items.length >= 1) { //chưa undo thì k thể redo
+  if(redoStack.length() >= 1) { //chưa undo thì k thể redo
     redoItem = redoStack.pop()
     undoStack.push(redoItem)
   } else {
-    console.log('Cannot redo')
+    alert('Cannot redo')
   }
 }
 
